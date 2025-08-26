@@ -6,15 +6,14 @@ import RegistrationForm from '../components/RegistrationForm/page';
 import MeetingInfo from '../components/MeetingInfo/page';
 import CountdownTimer from '../components/CountdownTimer/page';
 
-
 export default function Home() {
   const [meetingData, setMeetingData] = useState({
     title: 'Camporee 2025',
     date: '2025-12-01 to 2025-12-07',
     deadline: '2025-11-30T23:59:59',
     registrationAmount: 1000,
-    posterUrl: '/camporee2025.jpg',
-    description: 'Join us for an unforgetable week at Camporee 2025!'
+    posterUrl: '/default-poster.jpg',
+    description: 'Join us for spiritual growth and fellowship'
   });
 
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
@@ -37,6 +36,8 @@ export default function Home() {
         console.error('Error fetching meeting data:', error);
       }
     };
+
+    fetchMeetingData();
   }, []);
 
   // Check if registration deadline has passed
@@ -46,38 +47,44 @@ export default function Home() {
       const deadline = new Date(meetingData.deadline);
       setIsRegistrationOpen(now < deadline);
     };
+    
     checkDeadline();
     const interval = setInterval(checkDeadline, 60000); // Check every minute
+    
     return () => clearInterval(interval);
   }, [meetingData.deadline]);
 
   return (
-    <div className="container">
+    <div className="min-h-screen flex flex-col">
       <Head>
-        <title>Greater Rift Valley Conference SDA Church Registration - {meetingData.title}</title>
-        <meta name="description" content="Register for GRVC meetings" />
+        <title>SDA Church Registration - {meetingData.title}</title>
+        <meta name="description" content="Register for SDA Church meetings" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="header">
-        <img src="/sda-logo.png" alt="SDA Church Logo" className="logo" />
-        <h1>Greater Rift Valley Conference</h1>
-        <p>Seventh-day Adventist Church</p>
+      <header className="bg-blue-800 text-white p-4 text-center">
+        <img src="/sda-logo.png" alt="SDA Church Logo" className="h-20 mx-auto" />
+        <h1 className="text-2xl font-bold mt-2">Greater Rift Valley Conference</h1>
+        <p className="text-sm">Seventh-day Adventist Church</p>
       </header>
 
-      <main className="main">
-        <div className="meeting-header">
-          <div className="poster-container">
-            <img src={meetingData.posterUrl} alt={meetingData.title} className="poster" />
+      <main className="flex-1 p-8 max-w-6xl mx-auto w-full">
+        <div className="flex flex-col md:flex-row gap-8 mb-8">
+          <div className="flex-1">
+            <img 
+              src={meetingData.posterUrl} 
+              alt={meetingData.title} 
+              className="w-full rounded-lg shadow-md" 
+            />
           </div>
-          <div className="meeting-details">
+          <div className="flex-1">
             <MeetingInfo meetingData={meetingData} />
             <CountdownTimer deadline={meetingData.deadline} />
-
+            
             {!isRegistrationOpen && (
-              <div className="registration-closed">
-                <h3>Registration Closed</h3>
-                <p>The registration deadline has passed</p>
+              <div className="bg-red-100 text-red-700 p-4 rounded-md mt-4">
+                <h3 className="font-bold text-lg">Registration Closed</h3>
+                <p>The registration deadline has passed.</p>
               </div>
             )}
           </div>
@@ -86,78 +93,9 @@ export default function Home() {
         {isRegistrationOpen && <RegistrationForm meetingData={meetingData} />}
       </main>
 
-      <footer className="footer">
+      <footer className="bg-gray-100 p-4 text-center mt-auto">
         <p>&copy; {new Date().getFullYear()} Greater Rift Valley Conference - SDA Church</p>
       </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-        }
-        
-        .header {
-          background-color: #1a4e8e;
-          color: white;
-          padding: 1rem;
-          text-align: center;
-        }
-        
-        .header h1 {
-          margin: 0.5rem 0;
-        }
-        
-        .logo {
-          height: 80px;
-        }
-        
-        .main {
-          flex: 1;
-          padding: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-          width: 100%;
-        }
-        
-        .meeting-header {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-          margin-bottom: 2rem;
-        }
-        
-        .poster-container {
-          flex: 1;
-          min-width: 300px;
-        }
-        
-        .poster {
-          width: 100%;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .meeting-details {
-          flex: 2;
-          min-width: 300px;
-        }
-        
-        .registration-closed {
-          background-color: #ffebee;
-          color: #c62828;
-          padding: 1rem;
-          border-radius: 4px;
-          margin-top: 1rem;
-        }
-        
-        .footer {
-          background-color: #f5f5f5;
-          padding: 1rem;
-          text-align: center;
-          margin-top: auto;
-        }
-      `}</style>
     </div>
-  )
+  );
 }
