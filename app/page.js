@@ -9,7 +9,7 @@ import CountdownTimer from '../components/CountdownTimer/page';
 export default function Home() {
   const [meetingData, setMeetingData] = useState({
     title: 'Camporee 2025',
-    date: '2023-12-01',
+    date: '2025-12-01',
     deadline: '2025-11-30T23:59:59',
     registrationAmount: 1000,
     posterUrl: '/default-poster.jpg',
