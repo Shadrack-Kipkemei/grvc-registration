@@ -368,7 +368,139 @@ export default function AdminDashboard() {
                         </form>
                     </div>
                 )}
+
+                {activeTab === 'locations' && (
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Location Management</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div className="bg-gray-50 p-4 rounded-md">
+                                <h3 className="text-lg font-semifold mb-3">Add Station</h3>
+                                <form onSubmit={addStation}>
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Station Name</label>
+                                        <input
+                                            type="text"
+                                            value={newStation}
+                                            onChange={(e) => setNewStation(e.target.value)}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+                                        Add Station
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div className="bg-gray-50 p-4 rounded-md">
+                                <h3 className="text-lg font-semibold mb-3">Add District</h3>
+                                <form onSubmit={addDistrict}>
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Station</label>
+                                        <select
+                                            value={newDistrict.stationId}
+                                            onChange={(e) => setNewDistrict({...newDistrict, stationId: e.target.value})}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                        >
+                                            <option value="">Select Station</option>
+                                            {locations.stations.map(station => (
+                                                <option key={station.id} value={station.id}>{station.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">District Name</label>
+                                        <input
+                                            type="text"
+                                            value={newDistrict.name}
+                                            onChange={(e) => setNewDistrict({...newDistrict, name: e.target.value})}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+                                        Add District
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div className="bg-gray-50 p-4 rounded-md">
+                                <h3 className="text-lg font-semibold mb-3">Add Church</h3>
+                                <form onSubmit={addChurch}>
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Station</label>
+                                        <select
+                                            value={newChurch.stationId}
+                                            onChange={(e) => setNewChurch({...newChurch, stationId: e.target.value})}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                        >
+                                            <option value="">Select Station</option>
+                                            {locations.stations.map(station => (
+                                                <option key={station.id} value={station.id}>{station.id}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
+                                        <select
+                                            value={newChurch.districtId}
+                                            onChange={(e) => setNewChurch({...newChurch, districtId: e.target.value})}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                            disabled={!newChurch.stationId}
+                                        >
+                                            <option value="">Select District</option>
+                                            {newChurch.stationId &&
+                                                locations.stations
+                                                    .find(s => s.id == newChurch.stationId)
+                                                    ?.districts.map(district => (
+                                                        <option key={district.id} value={district.id}>{district.name}</option>
+                                                    ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Church Name</label>
+                                        <input
+                                            type="text"
+                                            value={newChurch.name}
+                                            onChange={(e) => setNewChurch({...newChurch, name: e.target.value})}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700">
+                                        Add Church
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xl font-semibold text-gray-700 mb-4">Current Locations</h3>
+                            {locations.stations.map(station => (
+                                <div key={station.id} className="mb-6 bg-gray-50 p-4 rounded-md">
+                                    <h4 className="text-lg font-medium text-blue-800">{station.name}</h4>
+                                    {station.districts && station.districts.map(district => (
+                                        <div key={district.id} className="ml-4 mt-3">
+                                            <h5 className="text-md font-medium text-gray-700">{district.name}</h5>
+                                            <ul className="ml-6 mt-1">
+                                                {district.churches && district.churches.map(church => (
+                                                    <li key={church.id} className="text-sm text-gray-600">• {church.name}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
-    )
+    );
 }
