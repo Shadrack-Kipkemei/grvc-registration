@@ -12,7 +12,7 @@ export default function Home() {
     date: '2025-12-01',
     deadline: '2025-11-30T23:59:59',
     registrationAmount: 1000,
-    posterUrl: '/default-poster.jpg',
+    posterUrl: '/mposter.jpeg',
     description: 'Join us for spiritual growth and fellowship'
   });
 
@@ -63,7 +63,7 @@ export default function Home() {
       </Head>
 
       <header className="bg-blue-800 text-white p-4 text-center">
-        <img src="/sda-logo.png" alt="SDA Church Logo" className="h-20 mx-auto" />
+        <img src="/sdalogo.png" alt="SDA Church Logo" className="h-20 mx-auto" />
         <h1 className="text-2xl font-bold mt-2">Greater Rift Valley Conference</h1>
         <p className="text-sm">Seventh-day Adventist Church</p>
       </header>
